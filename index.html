@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rubik's Cube – Christmas Scene (Final)</title>
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; }
+
+    
+    #rubiks-menu {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      top: auto;
+      z-index: 10;
+
+      background: rgba(255,255,255,0.85);
+      padding: 12px;
+      border-radius: 8px;
+      font-family: sans-serif;
+      max-width: 560px;
+    }
+
+    #rubiks-menu button {
+      margin: 2px 4px;
+      padding: 6px 12px;
+      border-radius: 5px;
+      border: none;
+      background: #d22525;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #rubiks-menu button:hover { background: #152d6e; }
+  </style>
+</head>
+
+<body>
+
+<div id="rubiks-menu">
+  <b>Rotate Slice:</b><br>
+  <button onclick="rotateSlice('U')">U</button>
+  <button onclick="rotateSlice('D')">D</button>
+  <button onclick="rotateSlice('L')">L</button>
+  <button onclick="rotateSlice('R')">R</button>
+  <button onclick="rotateSlice('F')">F</button>
+  <button onclick="rotateSlice('B')">B</button>
+  <button onclick="rotateSlice('W')">W</button>
+  <button onclick="rotateSlice('A')">A</button>
+  <button onclick="location.reload()">Reload</button>
+
+  <br><br>
+  <b>Undo Slice:</b><br>
+  <button onclick="rotateSlice('U', -1)">Undo U</button>
+  <button onclick="rotateSlice('D', -1)">Undo D</button>
+  <button onclick="rotateSlice('L', -1)">Undo L</button>
+  <button onclick="rotateSlice('R', -1)">Undo R</button>
+  <button onclick="rotateSlice('F', -1)">Undo F</button>
+  <button onclick="rotateSlice('B', -1)">Undo B</button>
+  <button onclick="rotateSlice('W', -1)">Undo W</button>
+</div>
+
+<a-scene stats
+         fog="type: exponential; color: #eef6ff; density: 0.035"
+         shadow="type: pcfsoft">
+
+  
+  <a-assets>
+    <img id="sky360"
+         src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg"
+         crossorigin="anonymous">
+  </a-assets>
+  <a-sky src="#sky360"></a-sky>
+
+  
+  <a-entity camera
+            look-controls
+            wasd-controls="acceleration: 12"
+            position="0 2.2 2.8"
+            rotation="-15 0 0">
+  </a-entity>
+
+  
+  <a-text value="ANASTASIOS"
+          position="0 6 -6"
+          rotation="0 0 0"
+          align="center"
+          width="10"
+          color="#d22525">
+  </a-text>
+
+  
+  <a-entity light="type: ambient; intensity: 0.9; color: #e6f2ff"></a-entity>
+  <a-entity light="type: directional;
+                   intensity: 2.5;
+                   castShadow: true;
+                   shadowMapWidth: 2048;
+                   shadowMapHeight: 2048;
+                   shadowBias: -0.0005"
+            position="1 4 3">
+  </a-entity>
+  <a-entity light="type: point; intensity: 1.5" position="-4 2 -3"></a-entity>
+  <a-entity light="type: point; intensity: 1.2" position="4 2 -3"></a-entity>
+
+  
+  <a-entity position="-5 1 -5.5" scale="0.85 0.85 0.85">
+    <a-cylinder color="#6b4f2a" height="0.6" radius="0.15" position="0 0.3 0"></a-cylinder>
+    <a-cone color="#0b6623" radius-bottom="0.9" height="1.4" position="0 1.2 0"></a-cone>
+    <a-cone color="#0e7a2f" radius-bottom="0.7" height="1.2" position="0 1.9 0"></a-cone>
+    <a-cone color="#128a38" radius-bottom="0.5" height="1.0" position="0 2.5 0"></a-cone>
+
+    
+    <a-entity position="0 3.45 0">
+      <a-box width="0.08" height="0.45" depth="0.08" color="#ffd966" emissive="#ffd966"></a-box>
+      <a-box width="0.45" height="0.08" depth="0.08" color="#ffd966" emissive="#ffd966"></a-box>
+      <a-box width="0.08" height="0.08" depth="0.45" color="#ffd966" emissive="#ffd966"></a-box>
+    </a-entity>
+  </a-entity>
+
+  
+  <a-entity position="5 1 -5.5" scale="0.85 0.85 0.85">
+    <a-cylinder color="#6b4f2a" height="0.6" radius="0.15" position="0 0.3 0"></a-cylinder>
+    <a-cone color="#0b6623" radius-bottom="0.9" height="1.4" position="0 1.2 0"></a-cone>
+    <a-cone color="#0e7a2f" radius-bottom="0.7" height="1.2" position="0 1.9 0"></a-cone>
+    <a-cone color="#128a38" radius-bottom="0.5" height="1.0" position="0 2.5 0"></a-cone>
+
+    
+    <a-entity position="0 3.45 0">
+      <a-box width="0.08" height="0.45" depth="0.08" color="#ffd966" emissive="#ffd966"></a-box>
+      <a-box width="0.45" height="0.08" depth="0.08" color="#ffd966" emissive="#ffd966"></a-box>
+      <a-box width="0.08" height="0.08" depth="0.45" color="#ffd966" emissive="#ffd966"></a-box>
+    </a-entity>
+  </a-entity>
+
+  
+  <a-entity id="cube-cluster"></a-entity>
+
+  
+  <a-plane position="0 0 -4"
+           rotation="-90 0 0"
+           width="8"
+           height="8"
+           color="#eafafa"
+           shadow="receive: true">
+  </a-plane>
+
+</a-scene>
+
+<script>
+
+
+const positions=[-1,0,1];
+const layersY=[1,2,3];
+const layersZ=[-2,-3,-4];
+let isAnimating=false;
+
+const sliceDefs={
+  U:{center:[0,3,-3],match:(x,y)=>y===3,axis:'y',angle:90},
+  D:{center:[0,1,-3],match:(x,y)=>y===1,axis:'y',angle:-90},
+  L:{center:[-1,2,-3],match:(x)=>x===-1,axis:'x',angle:-90},
+  R:{center:[1,2,-3],match:(x)=>x===1,axis:'x',angle:90},
+  F:{center:[0,2,-2],match:(x,y,z)=>z===-2,axis:'z',angle:90},
+  B:{center:[0,2,-4],match:(x,y,z)=>z===-4,axis:'z',angle:-90},
+  W:{center:[0,2,-3],match:(x)=>x===0,axis:'x',angle:90},
+  A:{center:[0,2,-3],match:()=>true,axis:'y',angle:90}
+};
+
+
+const COLORS = {
+  U: '#ffffff', // white
+  D: '#ffd500', // yellow
+  L: '#ff7a00', // orange
+  R: '#d60000', // red
+  F: '#00a651', // green
+  B: '#0051ba'  // blue
+};
+
+const cluster=document.getElementById('cube-cluster');
+let cubelets=[];
+
+
+const BODY_SIZE = 0.88;      
+const STICKER_SIZE = 0.62;   
+const HALF = BODY_SIZE/2;
+const EPS = 0.015;           
+
+function makeSticker(color, rotation, position){
+  const s = document.createElement('a-plane');
+  s.setAttribute('width', STICKER_SIZE);
+  s.setAttribute('height', STICKER_SIZE);
+  s.setAttribute('color', color);
+  s.setAttribute('rotation', rotation);
+  s.setAttribute('position', position);
+  s.setAttribute('material', 'shader: standard; roughness: 0.35; metalness: 0.05; side: double;');
+  return s;
+}
+
+for(let y of layersY){
+  for(let x of positions){
+    for(let z of layersZ){
+
+      const cubelet = document.createElement('a-entity');
+      cubelet.setAttribute('position', `${x} ${y} ${z}`);
+      cubelet.setAttribute('rotation', `0 0 0`);
+      cubelet.dataset.x=x; cubelet.dataset.y=y; cubelet.dataset.z=z;
+
+      
+      const body = document.createElement('a-box');
+      body.setAttribute('width', BODY_SIZE);
+      body.setAttribute('height', BODY_SIZE);
+      body.setAttribute('depth', BODY_SIZE);
+      body.setAttribute('color', '#0b0b0b');
+      body.setAttribute('material', 'shader: standard; roughness: 0.9; metalness: 0.05;');
+      body.setAttribute('shadow', 'cast: true');
+      cubelet.appendChild(body);
+
+      
+      if (y === 3) cubelet.appendChild(makeSticker(COLORS.U, '-90 0 0', `0 ${HALF+EPS} 0`));    // Up (+y)
+      if (y === 1) cubelet.appendChild(makeSticker(COLORS.D, '90 0 0',  `0 ${-(HALF+EPS)} 0`)); // Down (-y)
+      if (x === -1) cubelet.appendChild(makeSticker(COLORS.L, '0 -90 0', `${-(HALF+EPS)} 0 0`)); // Left (-x)
+      if (x === 1)  cubelet.appendChild(makeSticker(COLORS.R, '0 90 0',  `${(HALF+EPS)} 0 0`));  // Right (+x)
+      if (z === -2) cubelet.appendChild(makeSticker(COLORS.F, '0 0 0',   `0 0 ${HALF+EPS}`));    // Front (+z)
+      if (z === -4) cubelet.appendChild(makeSticker(COLORS.B, '0 180 0', `0 0 ${-(HALF+EPS)}`)); // Back (-z)
+
+      cluster.appendChild(cubelet);
+      cubelets.push(cubelet);
+    }
+  }
+}
+
+function parseRotation(rot){
+  if (typeof rot === 'string') {
+    const a = rot.trim().split(/\s+/).map(Number);
+    return {x: a[0]||0, y: a[1]||0, z: a[2]||0};
+  }
+  return rot || {x:0,y:0,z:0};
+}
+
+
+function rotateSlice(face,dir=1){
+  if(isAnimating) return;
+  isAnimating=true;
+
+  const def=sliceDefs[face];
+  const angle=def.angle*dir;
+  const affected=cubelets.filter(c=>def.match(+c.dataset.x,+c.dataset.y,+c.dataset.z));
+  let finished=0;
+
+  affected.forEach(c=>{
+    const pos = c.object3D.position;
+
+    const rel={x:pos.x-def.center[0],y:pos.y-def.center[1],z:pos.z-def.center[2]};
+    const s=angle/90;
+    const n={...rel};
+
+    if(def.axis==='x'){ n.y=s*rel.z;  n.z=-s*rel.y; }
+    if(def.axis==='y'){ n.x=s*rel.z;  n.z=-s*rel.x; }
+    if(def.axis==='z'){ n.x=-s*rel.y; n.y=s*rel.x; }
+
+    const np={x:def.center[0]+n.x,y:def.center[1]+n.y,z:def.center[2]+n.z};
+
+    c.setAttribute('animation__pos',{
+      property:'position',
+      to:`${np.x} ${np.y} ${np.z}`,
+      dur:600,
+      easing:'easeInOutQuad'
+    });
+
+    const rot = parseRotation(c.getAttribute('rotation'));
+    const nr = {x:rot.x, y:rot.y, z:rot.z};
+    if(def.axis==='x') nr.x += angle;
+    if(def.axis==='y') nr.y += angle;
+    if(def.axis==='z') nr.z += angle;
+
+    c.setAttribute('animation__rot',{
+      property:'rotation',
+      to:`${nr.x} ${nr.y} ${nr.z}`,
+      dur:600,
+      easing:'easeInOutQuad'
+    });
+
+    setTimeout(()=>{
+      c.setAttribute('position',`${np.x} ${np.y} ${np.z}`);
+      c.setAttribute('rotation',`${nr.x} ${nr.y} ${nr.z}`);
+
+      c.dataset.x=np.x; c.dataset.y=np.y; c.dataset.z=np.z;
+
+      c.removeAttribute('animation__pos');
+      c.removeAttribute('animation__rot');
+
+      finished++;
+      if(finished===affected.length) isAnimating=false;
+    },650);
+  });
+}
+
+window.rotateSlice=rotateSlice;
+</script>
+
+</body>
+</html>
